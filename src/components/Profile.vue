@@ -1,22 +1,20 @@
 <template>
-    <div v-if="user">
-        <div class="profile-photo" style="border: 1px solid black;">
-            <img :src="imagePreview || photoURL" alt="Profile Photo" class="profile-image" />
-            <button @click="toggleFileInput" class="edit-button" style="border: 1px solid black;">
-                <i class="fa-solid fa-pencil"></i>
-                <font-awesome-icon :icon="['fa', 'pencil']" />
-            </button>
-            <input type="file" ref="fileInput" @change="selectImage" hidden />
+    <div v-if="user" class="form-container">
+        <div class="profile-photo"> <img :src="imagePreview || photoURL" alt="Profile Photo" class="profile-image" />
+            <button @click="toggleFileInput" class="edit-button"> <font-awesome-icon :icon="['fa', 'pencil']" />
+            </button> <input type="file" ref="fileInput" @change="selectImage" hidden />
         </div>
-        <input v-model="displayName" placeholder="Name" />
-        <input v-model="apellidoPaterno" placeholder="Apellido Paterno" />
-        <input v-model="apellidoMaterno" placeholder="Apellido Materno" />
-        <input v-model="curp" placeholder="CURP" />
-        <input v-model="rfc" placeholder="RFC" />
-        <input v-model="telefono" placeholder="Teléfono" />
-        <input v-model="email" placeholder="Email" />
-        <button @click="saveProfile">Save Profile</button>
-        <button @click="logout">Logout</button>
+        <FormKit type="text" v-model="displayName" placeholder="Name" />
+        <FormKit type="text" v-model="apellidoPaterno" placeholder="Apellido Paterno" />
+        <FormKit type="text" v-model="apellidoMaterno" placeholder="Apellido Materno" />
+        <FormKit type="text" v-model="curp" placeholder="CURP" />
+        <FormKit type="text" v-model="rfc" placeholder="RFC" />
+        <FormKit type="tel" v-model="telefono" placeholder="Teléfono" />
+        <FormKit type="email" v-model="email" placeholder="Email" />
+        <div class="button-container">
+            <button @click="saveProfile" class="save-button">Save Profile</button>
+            <button @click="logout" class="logout-button">Logout</button>
+        </div>
     </div>
 </template>
 
@@ -29,12 +27,12 @@ import { db, auth, storage } from '../firebase';
 import { useRouter } from 'vue-router';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import defaultAvatar from '../assets/default-avatar.png';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
 
 export default defineComponent({
     setup() {
-        library.add(faPencil)
+        library.add(faPencil);
 
         const user = useCurrentUser();
         const photoURL = ref<string>(defaultAvatar);
@@ -70,7 +68,7 @@ export default defineComponent({
 
                 await uploadBytes(storageRefPath, file);
                 const downloadURL = await getDownloadURL(storageRefPath);
-                photoURL.value = downloadURL; // Actualiza photoURL con la imagen subida
+                photoURL.value = downloadURL;
             }
         };
 
@@ -93,7 +91,7 @@ export default defineComponent({
                     rfc.value = userData.rfc || '';
                     telefono.value = userData.telefono || '';
                     email.value = userData.email || '';
-                    photoURL.value = user.value.photoURL || photoURL.value; // Usa photoURL predeterminada si no hay personalizada
+                    photoURL.value = user.value.photoURL || photoURL.value;
                 }
             }
         });
@@ -145,11 +143,21 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.form-container {
+    background-color: #E0FBFC;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+}
+
 .profile-photo {
     position: relative;
     width: 150px;
     height: 150px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 }
 
 .profile-image {
@@ -157,19 +165,93 @@ export default defineComponent({
     height: 100%;
     border-radius: 60%;
     object-fit: cover;
-    border: 1px solid red;
+    border: 2px solid #3D5A80;
 }
 
 .edit-button {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background-color: #ffffff;
-    border: none;
+    background-color: #E0FBFC;
+    border: 2px solid #3D5A80;
     border-radius: 50%;
     padding: 5px;
     cursor: pointer;
     font-size: 16px;
-    color: #333;
+    color: #293241;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #98C1D9;
+    color: #EE6C4D;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.save-button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  background-color: #3D5A80;
+  border: none;
+  color: #E0FBFC;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #293241;
+  color: #E0FBFC;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  background-color: #EE6C4D;
+  border: none;
+  color: #E0FBFC;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #D1495B;
+  color: #E0FBFC;
+}
+
+button:focus {
+    outline: none;
+}
+
+FormKit {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"] {
+    padding: 8px;
+    border: 2px solid #3D5A80;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus {
+    border-color: #98C1D9;
+    outline: none;
 }
 </style>
