@@ -13,14 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
+/* a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
-}
-a:hover {
+} */
+/* a:hover {
   color: #535bf2;
-}
+} */
 
 body {
   margin: 0;
@@ -30,10 +30,10 @@ body {
   min-height: 100vh;
 }
 
-h1 {
+/* h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
+} */
 
 button {
   border-radius: 8px;
@@ -46,17 +46,17 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+/* button:hover {
   border-color: #646cff;
-}
-button:focus,
+} */
+/* button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
-.card {
+/* .card {
   padding: 2em;
-}
+} */
 
 #app {
   max-width: 1280px;
@@ -68,12 +68,54 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    background-color: #98C1D8;
   }
-  a:hover {
+  /* a:hover {
     color: #747bff;
-  }
-  button {
+  } */
+  /* button {
     background-color: #f9f9f9;
-  }
+  } */
+}
+
+
+:root {
+  --fk-color-border-focus: var(--pastel-indigo);
+  --fk-font-family: 'Poppins', sans-serif;
+  --fk-max-width-input: 100%;
+  --fk-bg-submit: var(--pastel-indigo);
+}
+
+.formkit-mdd-label {
+  color: var(--gentle-purple);
+}
+
+.formkit-mdd-inner {
+  background: var(--light-lavender);
+}
+
+button.formkit-input {
+  --fk-bg-button: var(--gentle-purple);
+  --fk-color-button: var(--white);
+  --fk-bg-button-hover: var(--soft-blue);
+  border: 2px solid var(--pale-pink) !important;
+}
+
+[data-type="button"] .formkit-input,
+[data-type="submit"] .formkit-input {
+  width: 100%;
+  text-align: center;
+}
+
+[data-type="checkbox"] .formkit-input~.formkit-decorator {
+  margin: 0;
+}
+
+[data-type="checkbox"] .formkit-mdd-label {
+  color: black;
+  margin-left: 5px;
+}
+
+[data-type="checkbox"] fieldset.formkit-fieldset {
+  border: 1px solid var(--gentle-purple);
 }
